@@ -1,10 +1,11 @@
 // Importamos el módulo HTTP de Node.js para crear un servidor web
 const http = require('http');
 
-// Definimos la función que manejará las solicitudes entrantes al servidor
-// El manejador recibe dos parámetros:
-// - `request`: información sobre la solicitud del cliente (como URL y encabezados)
-// - `response`: objeto para enviar la respuesta al cliente
+
+// Lee el archivo de configuración
+const config = JSON.parse(fs.readFileSync('config.json'));
+
+// Definir el manejador de solicitudes (request handler)
 const requestHandler = (request, response) => {
   // Configuramos la respuesta para que tenga un código de estado 200, lo que significa "OK" (éxito)
   // También establecemos el tipo de contenido a "text/plain", indicando que el contenido será texto sin formato
@@ -32,15 +33,20 @@ const requestHandler = (request, response) => {
 // Pasamos el `requestHandler` como argumento, que será llamado cada vez que el servidor reciba una solicitud
 const server = http.createServer(requestHandler);
 
-// Iniciamos el servidor para escuchar solicitudes HTTP en el puerto 3000 y la dirección 'localhost'
-// El tercer parámetro es una función de callback opcional que se ejecutará una vez que el servidor esté listo
-server.listen(3000, 'localhost', (err) => {
-  // Si hay un error al intentar iniciar el servidor, mostramos un mensaje de error en la consola
-  // Esto puede ocurrir si el puerto 3000 ya está en uso o si no se tienen permisos para usar el puerto
+
+// Usa el puerto obtenido del archivo de configuración
+const puerto = config.puerto;
+const direccion = config.host;
+
+// Escuchar las solicitudes en el puerto 3000 y la dirección IP 'localhost'
+server.listen(puerto, direccion, (err) => {
+  // Si hay un error al iniciar el servidor, mostrar un mensaje de error
+
   if (err) {
     return console.log('Error al iniciar el servidor:', err);
   }
 
-  // Si el servidor se inicia correctamente, mostramos un mensaje en la consola indicando que está en funcionamiento
-  console.log('Servidor escuchando en: http://localhost:3000/');
+  // Si no hay errores, mostrar un mensaje indicando que el servidor está escuchando en el puerto 3000
+    console.log(`Servidor escuchando en: http://${direccion}:${puerto}/`);
+
 });
