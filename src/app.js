@@ -6,7 +6,15 @@ const requestHandler = (request, response) => {
   // Configurar el encabezado de la respuesta con el código de estado 200 (OK) y el tipo de contenido como texto plano
   response.writeHead(200, {'Content-Type': 'text/plain'});
   // Enviar el mensaje de respuesta al cliente
-  response.end('¡Hola, mundo!\n');
+    // Enviar el mensaje de respuesta al cliente dependiendo de la ruta
+    if (path === '/') {
+      response.end('¡Hola, mundo!\n');
+    } else if (path === '/otro') {
+      response.end('¡Hola desde otro endpoint!\n');
+    } else {
+      response.writeHead(404, {'Content-Type': 'text/plain'});
+      response.end('Ruta no encontrada\n');
+    }
 };
 
 // Crear un servidor HTTP y pasarle el manejador de solicitudes
