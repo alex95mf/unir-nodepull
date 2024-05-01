@@ -10,9 +10,22 @@ const requestHandler = (request, response) => {
   // También establecemos el tipo de contenido a "text/plain", indicando que el contenido será texto sin formato
   response.writeHead(200, {'Content-Type': 'text/plain'});
 
+  // Enviar el mensaje de respuesta al cliente
+    // Enviar el mensaje de respuesta al cliente dependiendo de la ruta
+    if (path === '/') {
+      response.end('¡Hola, mundo!\n');
+    } else if (path === '/otro') {
+      response.end('¡Hola desde otro endpoint!\n');
+    } else {
+      response.writeHead(404, {'Content-Type': 'text/plain'});
+      response.end('Ruta no encontrada\n');
+    }
+
+
   // Enviamos el mensaje de respuesta al cliente
   // Aquí estamos enviando un simple texto plano con el mensaje "¡Hola, mundo!"
   response.end('¡Hola, mundo!\n');
+
 };
 
 // Creamos un servidor HTTP utilizando la función createServer del módulo HTTP
